@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub - Introduction to Machine Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0056d2;
+            --primary-dark: #0041a8;
+            --secondary: #6c757d;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --border: #e9ecef;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 86, 210, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            gap: 2rem;
+        }
+
+        .course-content {
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+        }
+
+        /* Video Section */
+        .video-section {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .instructor-name {
+            font-weight: 600;
+        }
+
+        .instructor-title {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 30%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Tabs Section */
+        .tabs-section {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(0, 86, 210, 0.05);
+        }
+
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .overview-content h3 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .overview-content p {
+            margin-bottom: 1rem;
+        }
+
+        .course-features {
+            margin: 1.5rem 0;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background-color: rgba(0, 86, 210, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .resources-list {
+            list-style-type: none;
+        }
+
+        .resource-item {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 86, 210, 0.1);
+            color: var(--primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .discussion-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .discussion-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .discussion-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .discussion-meta {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .discussion-content {
+            margin-top: 0.5rem;
+        }
+
+        /* Sidebar Styles */
+        .sidebar-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lessons-list {
+            list-style-type: none;
+        }
+
+        .lesson-item {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .lesson-item:hover {
+            background-color: rgba(0, 86, 210, 0.05);
+        }
+
+        .lesson-item.active {
+            background-color: rgba(0, 86, 210, 0.1);
+            border-color: var(--primary);
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-title {
+            font-weight: 500;
+        }
+
+        .lesson-duration {
+            font-size: 0.8rem;
+            color: var(--secondary);
+        }
+
+        .lesson-description {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .enroll-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .discount-badge {
+            background-color: var(--success);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .enroll-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .enroll-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 86, 210, 0.3);
+        }
+
+        .includes-list {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .includes-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .check-icon {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .search-bar {
+                margin: 0 1rem;
+            }
+            
+            .tabs-header {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+            
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .search-bar {
+                order: 3;
+                margin: 1rem 0 0;
+                max-width: 100%;
+            }
+            
+            .user-profile span {
+                display: none;
+            }
+            
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <div class="logo-icon">L</div>
+                LearnHub
+            </a>
+            
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search for courses...">
+            </div>
+            
+            <div class="user-profile">
+                <span>Alex Johnson</span>
+                <div class="avatar">AJ</div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Course Content -->
+        <div class="course-content">
+            <!-- Video Section -->
+            <section class="video-section">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/aircAruvnKk" 
+                            title="Introduction to Machine Learning" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="video-info">
+                    <h1 class="course-title">Introduction to Machine Learning</h1>
+                    
+                    <div class="instructor-info">
+                        <div class="instructor-avatar">SD</div>
+                        <div>
+                            <div class="instructor-name">Dr. Sarah Davis</div>
+                            <div class="instructor-title">Data Science Professor at Stanford University</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Course Progress</span>
+                            <span>30% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabs Section -->
+            <section class="tabs-section">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="overview">Overview</button>
+                    <button class="tab-btn" data-tab="resources">Resources</button>
+                    <button class="tab-btn" data-tab="discussion">Discussion</button>
+                </div>
+                
+                <div class="tab-content active" id="overview">
+                    <div class="overview-content">
+                        <h3>About This Course</h3>
+                        <p>This course provides a broad introduction to machine learning, data mining, and statistical pattern recognition. Topics include:</p>
+                        
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                            <li>Supervised learning (parametric/non-parametric algorithms, support vector machines, kernels, neural networks)</li>
+                            <li>Unsupervised learning (clustering, dimensionality reduction, recommender systems, deep learning)</li>
+                            <li>Best practices in machine learning (bias/variance theory; innovation process in machine learning and AI)</li>
+                        </ul>
+                        
+                        <p>The course will also draw from numerous case studies and applications, so you'll also learn how to apply learning algorithms to building smart robots (perception, control), text understanding (web search, anti-spam), computer vision, medical informatics, audio, database mining, and other areas.</p>
+                        
+                        <div class="course-features">
+                            <h3>What You'll Learn</h3>
+                            <div class="feature-list">
+                                <div class="feature-item">
+                                    <div class="feature-icon">✓</div>
+                                    <span>Understand the theoretical foundations of machine learning</span>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">✓</div>
+                                    <span>Implement machine learning algorithms from scratch</span>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">✓</div>
+                                    <span>Apply machine learning to real-world problems</span>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">✓</div>
+                                    <span>Evaluate and improve model performance</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="resources">
+                    <h3>Course Resources</h3>
+                    <p>Download these resources to supplement your learning:</p>
+                    
+                    <ul class="resources-list">
+                        <li class="resource-item">
+                            <div class="resource-icon">📘</div>
+                            <div>
+                                <div class="resource-title">Course Syllabus</div>
+                                <div class="resource-meta">PDF • 120 KB</div>
+                            </div>
+                        </li>
+                        <li class="resource-item">
+                            <div class="resource-icon">📊</div>
+                            <div>
+                                <div class="resource-title">Week 1 Slides</div>
+                                <div class="resource-meta">PDF • 2.1 MB</div>
+                            </div>
+                        </li>
+                        <li class="resource-item">
+                            <div class="resource-icon">📝</div>
+                            <div>
+                                <div class="resource-title">Practice Exercises</div>
+                                <div class="resource-meta">ZIP • 850 KB</div>
+                            </div>
+                        </li>
+                        <li class="resource-item">
+                            <div class="resource-icon">🔗</div>
+                            <div>
+                                <div class="resource-title">Additional Reading Materials</div>
+                                <div class="resource-meta">Links • External Resources</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content" id="discussion">
+                    <h3>Course Discussion</h3>
+                    <p>Join the conversation with fellow learners:</p>
+                    
+                    <div class="discussion-item">
+                        <div class="discussion-header">
+                            <div class="discussion-avatar">MJ</div>
+                            <div>
+                                <div class="discussion-author">Michael Johnson</div>
+                                <div class="discussion-meta">2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="discussion-content">
+                            <p>I'm having trouble understanding the difference between supervised and unsupervised learning. Can someone explain with a simple example?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="discussion-item">
+                        <div class="discussion-header">
+                            <div class="discussion-avatar">RP</div>
+                            <div>
+                                <div class="discussion-author">Dr. Sarah Davis (Instructor)</div>
+                                <div class="discussion-meta">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="discussion-content">
+                            <p>Great question, Michael! Supervised learning uses labeled data (we know the right answers), like classifying emails as spam/not spam. Unsupervised learning finds patterns in unlabeled data, like grouping customers by purchasing behavior without predefined categories.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="discussion-item">
+                        <div class="discussion-header">
+                            <div class="discussion-avatar">EK</div>
+                            <div>
+                                <div class="discussion-author">Emma Kim</div>
+                                <div class="discussion-meta">5 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="discussion-content">
+                            <p>Thanks for the explanation! That makes it much clearer. I was also confused about this.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Lessons List -->
+            <div class="sidebar-card">
+                <h2 class="sidebar-title">Course Content</h2>
+                
+                <ul class="lessons-list">
+                    <li class="lesson-item active" data-lesson="1">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Introduction to Machine Learning</div>
+                            <div class="lesson-duration">15:30</div>
+                        </div>
+                        <div class="lesson-description">What is ML and why it matters</div>
+                    </li>
+                    
+                    <li class="lesson-item" data-lesson="2">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Supervised Learning</div>
+                            <div class="lesson-duration">22:15</div>
+                        </div>
+                        <div class="lesson-description">Regression and classification algorithms</div>
+                    </li>
+                    
+                    <li class="lesson-item" data-lesson="3">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Unsupervised Learning</div>
+                            <div class="lesson-duration">18:45</div>
+                        </div>
+                        <div class="lesson-description">Clustering and dimensionality reduction</div>
+                    </li>
+                    
+                    <li class="lesson-item" data-lesson="4">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Neural Networks</div>
+                            <div class="lesson-duration">25:10</div>
+                        </div>
+                        <div class="lesson-description">Introduction to deep learning</div>
+                    </li>
+                    
+                    <li class="lesson-item" data-lesson="5">
+                        <div class="lesson-header">
+                            <div class="lesson-title">Model Evaluation</div>
+                            <div class="lesson-duration">19:20</div>
+                        </div>
+                        <div class="lesson-description">Metrics and validation techniques</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Enrollment Card -->
+            <div class="sidebar-card enroll-card">
+                <h2 class="sidebar-title">Enroll in this Course</h2>
+                <div class="price">
+                    <span class="original-price">$99.99</span>
+                    <span>$79.99</span>
+                    <span class="discount-badge">20% OFF</span>
+                </div>
+                
+                <button class="enroll-btn">Enroll Now</button>
+                
+                <div class="includes-list">
+                    <div class="includes-item">
+                        <span class="check-icon">✓</span>
+                        <span>Full lifetime access</span>
+                    </div>
+                    <div class="includes-item">
+                        <span class="check-icon">✓</span>
+                        <span>Certificate of completion</span>
+                    </div>
+                    <div class="includes-item">
+                        <span class="check-icon">✓</span>
+                        <span>30-day money-back guarantee</span>
+                    </div>
+                    <div class="includes-item">
+                        <span class="check-icon">✓</span>
+                        <span>Access on mobile and TV</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Tab Switching Functionality
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked tab and corresponding content
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Lesson Selection Functionality
+        document.querySelectorAll('.lesson-item').forEach(lesson => {
+            lesson.addEventListener('click', () => {
+                // Remove active class from all lessons
+                document.querySelectorAll('.lesson-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Add active class to clicked lesson
+                lesson.classList.add('active');
+                
+                // Update progress bar based on selected lesson
+                const lessonNumber = parseInt(lesson.getAttribute('data-lesson'));
+                const progressPercentage = (lessonNumber / 5) * 100;
+                document.querySelector('.progress-fill').style.width = `${progressPercentage}%`;
+                document.querySelector('.progress-label span:last-child').textContent = `${progressPercentage}% Complete`;
+                
+                // In a real app, you would also update the video player here
+                console.log(`Loading video for lesson ${lessonNumber}`);
+            });
+        });
+        
+        // Enroll Button Animation
+        document.querySelector('.enroll-btn').addEventListener('click', function() {
+            this.textContent = 'Enrolling...';
+            setTimeout(() => {
+                this.textContent = 'Enrolled!';
+                this.style.backgroundColor = '#28a745';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

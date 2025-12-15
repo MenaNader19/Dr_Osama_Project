@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Learning Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0056d2;
+            --primary-light: #e6f0ff;
+            --secondary: #6c757d;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 30px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            background-color: var(--light-gray);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(0, 86, 210, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            gap: 30px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-title {
+            padding: 0 20px 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .filter-options {
+            list-style: none;
+        }
+
+        .filter-option {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .filter-option:hover {
+            background-color: var(--light-gray);
+        }
+
+        .filter-option.active {
+            background-color: var(--primary-light);
+            border-left-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .filter-option i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            background-color: var(--white);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Course Cards Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .course-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 20px;
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .course-instructor {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .course-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0044ad;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                margin-bottom: 20px;
+            }
+
+            .filter-options {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+
+            .filter-option {
+                white-space: nowrap;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .filter-option.active {
+                border-left: none;
+                border-bottom: 3px solid var(--primary);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px 20px;
+            }
+
+            .search-container {
+                margin: 0 15px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-container {
+                display: none;
+            }
+
+            .profile-menu {
+                gap: 10px;
+            }
+
+            .course-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="#" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>LearnHub</span>
+            </a>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search for courses...">
+            </div>
+            <div class="profile-menu">
+                <div class="notification-icon">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="profile-icon">AN</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2 class="sidebar-title">My Learning</h2>
+            <ul class="filter-options">
+                <li class="filter-option active" data-filter="all">
+                    <i class="fas fa-th-large"></i>
+                    <span>All Courses</span>
+                </li>
+                <li class="filter-option" data-filter="in-progress">
+                    <i class="fas fa-play-circle"></i>
+                    <span>In Progress</span>
+                </li>
+                <li class="filter-option" data-filter="completed">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Completed</span>
+                </li>
+                <li class="filter-option" data-filter="saved">
+                    <i class="far fa-bookmark"></i>
+                    <span>Saved for Later</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="page-title">My Courses</h1>
+                <div class="sort-options">
+                    <select class="sort-select" id="sort-select">
+                        <option value="recent">Recently Accessed</option>
+                        <option value="title">Course Title</option>
+                        <option value="progress">Progress</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Course Cards Grid -->
+            <div class="courses-grid" id="courses-grid">
+                <!-- Course cards will be dynamically generated here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sample course data
+        const courses = [
+            {
+                id: 1,
+                title: "Machine Learning Fundamentals",
+                instructor: "Dr. Sarah Johnson",
+                image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                progress: 75,
+                status: "in-progress",
+                lastAccessed: "2023-06-15"
+            },
+            {
+                id: 2,
+                title: "Web Development Bootcamp",
+                instructor: "Prof. Michael Chen",
+                image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                progress: 100,
+                status: "completed",
+                lastAccessed: "2023-06-10"
+            },
+            {
+                id: 3,
+                title: "Data Science with Python",
+                instructor: "Dr. Emily Rodriguez",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                progress: 30,
+                status: "in-progress",
+                lastAccessed: "2023-06-18"
+            },
+            {
+                id: 4,
+                title: "UX/UI Design Principles",
+                instructor: "Alex Thompson",
+                image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                progress: 0,
+                status: "saved",
+                lastAccessed: "2023-05-22"
+            },
+            {
+                id: 5,
+                title: "Business Analytics",
+                instructor: "Dr. Robert Williams",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                progress: 45,
+                status: "in-progress",
+                lastAccessed: "2023-06-12"
+            },
+            {
+                id: 6,
+                title: "Mobile App Development",
+                instructor: "Jessica Lee",
+                image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                progress: 100,
+                status: "completed",
+                lastAccessed: "2023-05-30"
+            }
+        ];
+
+        // DOM Elements
+        const coursesGrid = document.getElementById('courses-grid');
+        const filterOptions = document.querySelectorAll('.filter-option');
+        const sortSelect = document.getElementById('sort-select');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const sidebar = document.querySelector('.sidebar');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCourses(courses);
+            setupEventListeners();
+        });
+
+        // Render courses to the grid
+        function renderCourses(coursesToRender) {
+            coursesGrid.innerHTML = '';
+            
+            if (coursesToRender.length === 0) {
+                coursesGrid.innerHTML = '<p>No courses found matching your selection.</p>';
+                return;
+            }
+            
+            coursesToRender.forEach(course => {
+                const courseCard = createCourseCard(course);
+                coursesGrid.appendChild(courseCard);
+            });
+        }
+
+        // Create a course card element
+        function createCourseCard(course) {
+            const card = document.createElement('div');
+            card.className = 'course-card';
+            card.dataset.status = course.status;
+            
+            // Determine button text based on progress
+            let buttonText = 'Start Learning';
+            let buttonClass = 'btn-primary';
+            
+            if (course.progress > 0 && course.progress < 100) {
+                buttonText = 'Continue';
+            } else if (course.progress === 100) {
+                buttonText = 'Review Course';
+                buttonClass = 'btn-outline';
+            }
+            
+            card.innerHTML = `
+                <img src="${course.image}" alt="${course.title}" class="course-image">
+                <div class="course-content">
+                    <h3 class="course-title">${course.title}</h3>
+                    <p class="course-instructor">${course.instructor}</p>
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span>${course.progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${course.progress}%"></div>
+                        </div>
+                    </div>
+                    <div class="course-actions">
+                        <button class="btn ${buttonClass}">${buttonText}</button>
+                        <button class="btn btn-outline">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Filter courses by status
+        function filterCourses(status) {
+            if (status === 'all') {
+                return courses;
+            }
+            return courses.filter(course => course.status === status);
+        }
+
+        // Sort courses
+        function sortCourses(coursesToSort, criteria) {
+            const sortedCourses = [...coursesToSort];
+            
+            switch(criteria) {
+                case 'title':
+                    sortedCourses.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'progress':
+                    sortedCourses.sort((a, b) => b.progress - a.progress);
+                    break;
+                case 'recent':
+                default:
+                    // For demo purposes, we'll sort by ID (simulating recent access)
+                    sortedCourses.sort((a, b) => b.id - a.id);
+                    break;
+            }
+            
+            return sortedCourses;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter options
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    filterOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Get filter value
+                    const filterValue = this.dataset.filter;
+                    
+                    // Filter courses
+                    let filteredCourses = filterCourses(filterValue);
+                    
+                    // Sort courses
+                    const sortValue = sortSelect.value;
+                    filteredCourses = sortCourses(filteredCourses, sortValue);
+                    
+                    // Render filtered courses
+                    renderCourses(filteredCourses);
+                });
+            });
+            
+            // Sort select
+            sortSelect.addEventListener('change', function() {
+                const filterValue = document.querySelector('.filter-option.active').dataset.filter;
+                let filteredCourses = filterCourses(filterValue);
+                filteredCourses = sortCourses(filteredCourses, this.value);
+                renderCourses(filteredCourses);
+            });
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>
