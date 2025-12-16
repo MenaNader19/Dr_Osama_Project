@@ -28,5 +28,10 @@ class User {
         }
         return false;
     }
+
+    public function getAll() {
+        $stmt = $this->pdo->query("SELECT id, username, email, role, created_at FROM users");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

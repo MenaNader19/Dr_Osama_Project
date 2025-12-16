@@ -26,6 +26,17 @@ if ($method === 'POST') {
                 sendResponse('error', 'All fields are required');
             }
             break;
+        
+        case 'list':
+            // Only allow if admin (optional)
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                $users = $userModel->getAll();  // make sure User model has getAll()
+                sendResponse('success', 'Users fetched', $users);
+            } else {
+                sendResponse('error', 'Access denied');
+            }
+            break;
+
 
         case 'login':
             $email = $input['email'] ?? '';
