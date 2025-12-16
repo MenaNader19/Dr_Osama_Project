@@ -17,7 +17,7 @@ switch ($action) {
     case 'create':
         $title = $input['title'] ?? '';
         $desc = $input['description'] ?? '';
-        $teacher_id = $input['teacher_id'] ?? 1; // replace with session user
+        $teacher_id = $input['teacher_id'] ?? 1; 
         if($title){
             $courseModel->create($title, $desc, $teacher_id);
             sendResponse('success', 'Course created successfully');
