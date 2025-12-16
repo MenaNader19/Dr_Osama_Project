@@ -9,7 +9,7 @@ $input = json_decode(file_get_contents("php://input"), true);
 
 switch ($action) {
     case 'enroll':
-        $student_id = $input['student_id'] ?? 1; // replace with session user
+        $student_id = $input['student_id'] ?? 1; 
         $course_id = $input['course_id'] ?? 0;
         if($course_id){
             $enrollModel->enroll($student_id, $course_id);
